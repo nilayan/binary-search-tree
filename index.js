@@ -152,17 +152,17 @@ const logFn = (label, text) => {
 
 // start here
 let html = '';
-let myBST = new BST(4);
+const tree = new BST(4);
 
-myBST.insert(2);
-myBST.insert(1);
-myBST.insert(5);
-myBST.insert(3);
+tree.insert(2);
+tree.insert(1);
+tree.insert(5);
+tree.insert(3);
 
-myBST.search(5);
+tree.search(5);
 
-myBST.inOrderTraversal();
-myBST.preOrderTraversal();
-myBST.postOrderTraversal();
+tree.inOrderTraversal();
+tree.preOrderTraversal();
+tree.postOrderTraversal();
 
 document.getElementById('app').innerHTML = html;
