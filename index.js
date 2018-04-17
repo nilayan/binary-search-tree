@@ -6,7 +6,7 @@ class BST {
    * @param {number} value
    */
   constructor(value) {
-    const label = 'New BST';
+    const label = 'new BST';
     this.value = value;
     this.left = null;
     this.right = null;
@@ -18,7 +18,7 @@ class BST {
    * @param {number} value - The number to insert.
    */
   insert(value) {
-    const label = 'Insert';
+    const label = 'insert';
 
     if (value <= this.value) {
       logFn(label, '<b>' + value + '</b> <= ' + this.value + ' Go LEFT');
@@ -46,7 +46,7 @@ class BST {
    * @param {number} value - The number to search for.
    */
   search(value) {
-    const label = 'Search';
+    const label = 'search';
 
     if (this.value === value) {
       logFn(label, 'Found value ' + this.value);
@@ -75,69 +75,34 @@ class BST {
   }
 
   /**
-   * Depth-first in-order traversal (left, root, right) with recursion.
+   * Depth-first traversal with recursion.
+   * @param {string} order - 'in-order' 'pre-order' 'post-order'
    */
-  inOrderTraversal() {
-    const label = 'In-order traversal';
-
+  traverse(order) {
     if (!this.left && !this.right) {
-      logFn(label, this.value + ' [leaf] ');
+      logFn(order, this.value + ' [leaf]');
       return;
     }
 
-    if (this.left) {
-      this.left.inOrderTraversal();
-    }
-
-    logFn(label, this.value);
-
-    if (this.right) {
-      this.right.inOrderTraversal();
-    }
-  }
-
-  /**
-   * Depth-first pre-order traversal (root, left, right) with recursion.
-   */
-  preOrderTraversal() {
-    const label = 'Pre-order traversal'
-
-    if (!this.left && !this.right) {
-      logFn(label, this.value + ' [leaf]');
-      return;
-    }
-
-    logFn(label, this.value);
-
-    if (this.left) {
-      this.left.preOrderTraversal();
-    }
-
-    if (this.right) {
-      this.right.preOrderTraversal();
-    }
-  }
-
-  /**
-   * Depth-first post-order traversal (left, right, root) with recursion.
-   */
-  postOrderTraversal() {
-    const label = 'Post-order traversal'
-
-    if (!this.left && !this.right) {
-      logFn(label, this.value + ' [leaf]');
-      return;
+    if (PRE_ORDER === order) {
+      logFn(order, this.value);
     }
 
     if (this.left) {
-      this.left.postOrderTraversal();
+      this.left.traverse(order);
+    }
+
+    if (IN_ORDER === order) {
+      logFn(order, this.value);
     }
 
     if (this.right) {
-      this.right.postOrderTraversal();
+      this.right.traverse(order);
     }
 
-    logFn(label, this.value);
+    if (POST_ORDER === order) {
+      logFn(order, this.value);
+    }
   }
 };
 
@@ -147,10 +112,11 @@ class BST {
  * @param {string} text
  */
 const logFn = (label, text) => {
-  html += '<span class="label"> ' + label + '</span> ' + text + '<br/>';
+  html += '<span class="label"> ' + label + ':</span> ' + text + '<br/>';
 }
 
 // start here
+const IN_ORDER = 'in-order', PRE_ORDER = 'pre-order', POST_ORDER = 'post-order';
 let html = '';
 const tree = new BST(4);
 
@@ -161,8 +127,8 @@ tree.insert(3);
 
 tree.search(5);
 
-tree.inOrderTraversal();
-tree.preOrderTraversal();
-tree.postOrderTraversal();
+tree.traverse(IN_ORDER);
+tree.traverse(PRE_ORDER);
+tree.traverse(POST_ORDER);
 
 document.getElementById('app').innerHTML = html;
