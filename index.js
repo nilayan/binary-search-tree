@@ -1,83 +1,168 @@
+/** Class representing a binary search tree (BST) */
 class BST {
+  /**
+   * Create a binary search tree.
+   * @constructor
+   * @param {number} value
+   */
   constructor(value) {
-    const label = 'Constructor';
+    const label = 'New BST';
     this.value = value;
     this.left = null;
     this.right = null;
-    logFn(label, 'value is ' + value);
+    logFn(label, '<b>'+value+'</b>');
   }
 
+  /**
+   * Insert a number in the BST with recursion.
+   * @param {number} value - The number to insert.
+   */
   insert(value) {
     const label = 'Insert';
-    logFn(label, 'value is ' + value);
 
     if (value <= this.value) {
-      logFn(label, 'value(' + value + ') LT or EQ ' + this.value);
+      logFn(label, '<b>' + value + '</b> <= ' + this.value + ' Go LEFT');
       if (!this.left) {
-        logFn(label, 'node.LEFT is empty');
-        logFn(label, 'node.LEFT new sub-tree value('+value+')');
+        logFn(label, this.value + '.left is ' + value);
         this.left = new BST(value);
       } else {
-        logFn(label, 'descend node.LEFT');
+        logFn(label, this.value + '.left subtree');
         this.left.insert(value);
       }
     } else if (value > this.value) {
-      logFn(label, 'value(' + value + ') GT ' + this.value);
+      logFn(label, '<b>' + value + '</b> > ' + this.value + ' Go RIGHT');
       if (!this.right) {
-        logFn(label, 'node.RIGHT is empty');
-        logFn(label, 'node.RIGHT new sub-tree value('+value+')');
+        logFn(label, this.value + '.right is ' + value);
         this.right = new BST(value);
       } else {
-        logFn(label, 'descend node.RIGHT');
+        logFn(label, this.value + '.right subtree');
         this.right.insert(value);
       }
     }
   }
 
-  find(value) {
-    const label = 'Find';
-    logFn(label, 'value is ' + value);
+  /**
+   * Search for number in the BST with recursion.
+   * @param {number} value - The number to search for.
+   */
+  search(value) {
+    const label = 'Search';
 
-    if (this.value === value) { // FOUND VALUE
-      logFn(label, 'value('+value+') EQ ' + this.value);
+    if (this.value === value) {
+      logFn(label, 'Found value ' + this.value);
       return true;
     }
 
-    if (value <= this.value) { // GO LEFT
-      logFn(label, 'value('+value+') LT or EQ ' + this.value);
+    if (value <= this.value) {
+      logFn(label, '<b>' + value + '</b> <= ' + this.value + ' Go LEFT');
       if (!this.left) {
-        logFn(label, 'node.LEFT is empty');
+        logFn(label, this.value + '.left is empty');
         return false;
       } else {
-        logFn(label, 'descend node.LEFT');
-        return this.left.find(value);
+        logFn(label, this.value + '.left subtree');
+        return this.left.search(value);
       }
-    } else if (value > this.value) { // GO RIGHT
-      logFn(label, 'value('+value+') GT node.value('+this.value+')');
+    } else if (value > this.value) {
+      logFn(label, '<b>' + value + '</b> > ' + this.value + ' Go RIGHT');
       if (!this.right) {
-        logFn(label, 'node.RIGHT is empty');
+        logFn(label, this.value + '.right is empty');
         return false;
       } else {
-        logFn(label, 'descend node.RIGHT');
-        return this.right.find(value);
+        logFn(label, this.value + '.right subtree');
+        return this.right.search(value);
       }
     }
   }
+
+  /**
+   * Depth-first in-order traversal (left, root, right) with recursion.
+   */
+  inOrderTraversal() {
+    const label = 'In-order traversal';
+
+    if (!this.left && !this.right) {
+      logFn(label, this.value + ' [leaf] ');
+      return;
+    }
+
+    if (this.left) {
+      this.left.inOrderTraversal();
+    }
+
+    logFn(label, this.value);
+
+    if (this.right) {
+      this.right.inOrderTraversal();
+    }
+  }
+
+  /**
+   * Depth-first pre-order traversal (root, left, right) with recursion.
+   */
+  preOrderTraversal() {
+    const label = 'Pre-order traversal'
+
+    if (!this.left && !this.right) {
+      logFn(label, this.value + ' [leaf]');
+      return;
+    }
+
+    logFn(label, this.value);
+
+    if (this.left) {
+      this.left.preOrderTraversal();
+    }
+
+    if (this.right) {
+      this.right.preOrderTraversal();
+    }
+  }
+
+  /**
+   * Depth-first post-order traversal (left, right, root) with recursion.
+   */
+  postOrderTraversal() {
+    const label = 'Post-order traversal'
+
+    if (!this.left && !this.right) {
+      logFn(label, this.value + ' [leaf]');
+      return;
+    }
+
+    if (this.left) {
+      this.left.postOrderTraversal();
+    }
+
+    if (this.right) {
+      this.right.postOrderTraversal();
+    }
+
+    logFn(label, this.value);
+  }
 };
 
+/**
+ * Concatenates 'label' + 'text' to global variable 'result'.
+ * @param {string} label
+ * @param {string} text
+ */
 const logFn = (label, text) => {
-  if (domElement) {
-    domElement.innerHTML += '<span class="label">'+label+'</span> ' + text + '<br/>';
-  }
+  html += '<span class="label"> ' + label + '</span> ' + text + '<br/>';
 }
 
 // start here
-const domElement = document.getElementById('app');
-
+let html = '';
 let myBST = new BST(4);
-myBST.insert(3);
-myBST.insert(8);
-myBST.insert(2);
-myBST.insert(9);
 
-myBST.find(8);
+myBST.insert(2);
+myBST.insert(1);
+myBST.insert(5);
+myBST.insert(3);
+
+myBST.search(5);
+
+myBST.inOrderTraversal();
+myBST.preOrderTraversal();
+myBST.postOrderTraversal();
+
+document.getElementById('app').innerHTML = html;
